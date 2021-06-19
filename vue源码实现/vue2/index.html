@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>vue2 demo</title>
+</head>
+
+<body>
+    <div id="app">
+        <h3>{{a}}</h3>
+
+        <h4>{{b}}</h4>
+
+        <p v-text="msg"></p>
+
+        <input type="text" v-model="b">
+        
+        <div v-on:click="onClick" style="margin-top:10px">
+            add
+        </div>
+    </div>
+
+
+    <script type="module">
+        import { Vue } from "./vue2.js"
+
+        const vm = new Vue({
+            el: '#app',
+            data: {
+                a: 1,
+                b: 2222,
+                msg: 'helle vue2'
+            },
+            methods: {
+                onClick() {
+                    this.a += 1
+                }
+            }
+        })
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vue3 demo</title>
+</head>
+
+<body>
+    <div id="app"></div>
+
+    <script type="module">
+        import { ref, reactive, mount, computed } from './vue3.js'
+
+        const App = {
+            $data: null,
+            setup() {
+                const a = reactive({
+                    factor: 1
+                })
+                const b = ref(1)
+
+                const c = computed(() => `${Number(this.$data.a.factor) + Number(this.$data.b.value)}`)
+
+                setInterval(() => {
+                    a.factor++
+                }, 1000)
+
+                setInterval(() => {
+                    b.value++
+                }, 2000)
+
+                return { a, b, c }
+            },
+            render() {
+                return `
+                     <h3>this is factor1: ${this.$data.a.factor}</h3>
+                     <h3>this is factor2: ${this.$data.b.value}</h3>
+                     <h5>this is total: ${this.$data.c.value}<h5>
+                `
+            }
+        }
+
+        mount(App, document.querySelector("#app"))
+    </script>
+</body>
+
+</html>
