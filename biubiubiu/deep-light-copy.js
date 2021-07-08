@@ -1,5 +1,13 @@
 function lightCopy(obj) {
-    return Object.assign({}, obj)
+    // return Object.assign({}, obj)
+    const newObj = {}
+    for (let key in obj) {
+        if (obj.hasOwnProperty(key)) {
+            newObj[key] = obj[key]
+        }
+    }
+
+    return newObj
 }
 
 /**
@@ -72,7 +80,7 @@ ttt.group = ttt.group2 = { name: '大心脏', slogan: '做大做强' }
 console.log(ttt)
 
 const copyTtt = deepCopy(ttt)
-
+console.log('深拷贝之后')
 copyTtt.group.name = '打不死的小强'
-
-console.log(copyTtt)
+console.log('原始对象', ttt)
+console.log('复制对象', copyTtt)

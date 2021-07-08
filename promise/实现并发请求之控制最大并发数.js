@@ -27,7 +27,7 @@ function promiseLimit(list, limit, handler) {
 }
 
 let count = 0
-function loadImg() {
+function loadImg(url) {
    
     return new Promise((resolve, reject) => {
         count++
@@ -35,7 +35,7 @@ function loadImg() {
 
         script.addEventListener('load', () => {
             console.log(`当前并发数`, count--)
-            resolve()
+            resolve(count)
         })
 
         script.addEventListener('error', () => {

@@ -15,6 +15,25 @@ function flat1(array) {
         return total.concat(flatten)
     }, [])
 }
+/**
+ * 实现一个指定deep深度扁平层级的实现
+ * reduce+递归
+ * @param {*} array 
+ */
+function flatDeep(array, deep = 1) {
+    if (deep > 0) {
+       return array.reduce((total, currentValue) => {
+            if (Array.isArray(currentValue)) {
+                total = total.concat(flatDeep(currentValue, deep - 1))
+            } else {
+                total = total.concat(currentValue)
+            }
+            return total
+        }, [])
+    } else {
+       return array.slice()
+    }
+}
 
 /**
  * forEach + 闭包函数 + 递归（从外层到内层）
@@ -67,6 +86,7 @@ function flat4(array) {
 
 const arr = [1, 2, '', [23, 3], [4, 5], [6, [7, 8]]]
 
+console.log(flatDeep(arr))
 console.log(flat1(arr))
 
 console.log(flat2(arr))

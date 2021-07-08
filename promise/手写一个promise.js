@@ -17,7 +17,11 @@ class JPromise {
         // 表示promise被拒绝的reason
         this.reason = null
 
-        fn(this.resolve, this.reject)
+        try {
+            fn(this.resolve.bind(this), this.reject.bind(this))
+        } catch (error) {
+            this.reject(error)
+        }
     }
 
     // 改变promise状态pending=>fulfilled,且状态只能改变一次
@@ -70,7 +74,7 @@ class JPromise {
         const onFulfilledFn = isFunction(onFulfilled) ? onFulfilled : (val) => val
         const onRejectedFn = isFunction(onRejected) ? onRejected : (reason) => reason
 
-        function onFulfilledFnWatch(resolve, reject) {
+        const onFulfilledFnWatch = (resolve, reject) => {
             // 模拟promise微任务时机执行then函数
             queueMicrotask(() => {
                 try {
@@ -88,7 +92,7 @@ class JPromise {
 
         }
 
-        function onRejectedFnWatch(resolve, reject) {
+        const onRejectedFnWatch = (resolve, reject) => {
             queueMicrotask(() => {
                 try {
                     // 需要注意的是，如果promise1的onRejected执行成功了，promise2应该被resolve
@@ -108,24 +112,22 @@ class JPromise {
          * 根据当前status状态结果执行对应不同的回调函数，
          * 若当前status任然为pending，则用数组缓存下多个链式then方法注册的回调函数，等待状态变更时机依次执行回调
          */
+        let newPromise
         switch (this.status) {
             case FULFILLED: {
-                const newPromsie = new JPromise(onFulfilledFnWatch)
-                return newPromsie
+                newPromise = new JPromise((resolve, reject) => onFulfilledFnWatch(resolve, reject, newPromise))
             }
             case REJECTED: {
-                const newPromsie = new JPromise(onRejectedFnWatch)
-                return newPromsie
+                newPromise = new JPromise((resolve, reject) => onRejectedFnWatch(resolve, reject, newPromise))
             }
             case PENDING: {
-                const newPromsie = new JPromise((resolve, reject) => {
-                    this.onFulfilleds.push(() => onFulfilledFnWatch(resolve, reject))
-                    this.onRejecteds.push(() => onRejectedFnWatch(resolve, reject))
+                newPromise = new JPromise((resolve, reject) => {
+                    this.onFulfilleds.push(() => onFulfilledFnWatch(resolve, reject, newPromise))
+                    this.onRejecteds.push(() => onRejectedFnWatch(resolve, reject, newPromise))
                 })
-
-                return newPromsie
             }
         }
+        return newPromise
     }
 
     catch(onRejected) {
@@ -241,3 +243,11 @@ class JPromise {
         })
     }
 }
+
+const promise = new JPromise((resolve) => {
+    setTimeout(() => resolve(2333), 1000)
+}).then(value => {
+    console.log("成功", value)
+}).catch(reason => {
+    console.log("失败", reason)
+})
