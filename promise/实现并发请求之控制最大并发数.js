@@ -26,6 +26,25 @@ function promiseLimit(list, limit, handler) {
     return Promise.all(asyncList)
 }
 
+function promiseLimit2(list, limit, handler){
+    const _list = Array.protptype.slice.call(list)
+
+    const promises = _list.splice(0, limit).map((url,index)=>{
+        return handler(url).then(()=>{
+            return index
+        })
+    })
+
+    let p = Promise.race(promises)
+    for(let i =0;i<_list.length;i++){
+        p = p.then((index)=>{
+            promises[index] = handler(_list[i]).then(()=> index)
+
+            return Promise.race(promises)
+        })
+    }
+}
+
 let count = 0
 function loadImg(url) {
    
