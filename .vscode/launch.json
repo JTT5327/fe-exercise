@@ -16,6 +16,12 @@
             "type": "node",
             "request":"launch",
             "program": "${workspaceFolder}/promise/mpromise.js"
+        },
+        {
+            "name": "three-nums调试",
+            "type": "node",
+            "request":"launch",
+            "program": "${workspaceFolder}/biubiubiu/three-num.js"
         }
     ]
 }

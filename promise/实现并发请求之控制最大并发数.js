@@ -30,9 +30,7 @@ function promiseLimit2(list, limit, handler){
     const _list = Array.protptype.slice.call(list)
 
     const promises = _list.splice(0, limit).map((url,index)=>{
-        return handler(url).then(()=>{
-            return index
-        })
+        return handler(url).then(()=> index)
     })
 
     let p = Promise.race(promises)
