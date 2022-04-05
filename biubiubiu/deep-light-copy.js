@@ -83,4 +83,6 @@ const copyTtt = deepCopy(ttt)
 console.log('深拷贝之后')
 copyTtt.group.name = '打不死的小强'
 console.log('原始对象', ttt)
+console.log('原始对象.self', ttt.self)
 console.log('复制对象', copyTtt)
+console.log('复制对象.self', copyTtt.self)
