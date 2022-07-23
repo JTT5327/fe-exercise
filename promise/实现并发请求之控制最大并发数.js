@@ -4,7 +4,7 @@
 */
 
 function promiseLimit(list, limit, handler) {
-    const _list = [].slice.call(list)
+    const _list = [].slice.call(list) //浅拷贝
 
     function asyncFn(list) {
         return handler(list.shift()).then((val) => {

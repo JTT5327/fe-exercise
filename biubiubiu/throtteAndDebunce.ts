@@ -75,3 +75,19 @@ function throttle3(fn: (...args) => any, interval: number) {
         }
     }
 }
+
+/**
+ * 防抖函数
+ * @param fn 
+ * @param interval 
+ */
+function debounce(fn: (...args) => any, interval: number) {
+    let timer = null
+
+    return function (this: any, ...args: any[]) {
+        if (timer !== null) {
+            clearTimeout(timer)
+        }
+        timer = setTimeout(() => fn.apply(this, args), interval)
+    }
+}
