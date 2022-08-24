@@ -6,7 +6,7 @@ function sort(nums){
     let leftArry = []
     let rightArray = []
     let mid = Math.floor(nums.length/2)
-    let centerNum = nums.splice(mid, 1)
+    let centerNum = nums.splice(mid, 1)[0]
 
     for(let i =0;i<nums.length;i++){
         if(nums[i]<=centerNum){

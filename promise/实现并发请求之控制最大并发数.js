@@ -7,7 +7,8 @@ function promiseLimit(list, limit, handler) {
     const _list = [].slice.call(list) //浅拷贝
 
     function asyncFn(list) {
-        return handler(list.shift()).then((val) => {
+        const item = list.shift()
+        return handler(item).then((val) => {
             console.log('正在执行的异步任务数', val)
             if (list.length > 0) {
                 return asyncFn(list)
@@ -26,26 +27,36 @@ function promiseLimit(list, limit, handler) {
     return Promise.all(asyncList)
 }
 
-function promiseLimit2(list, limit, handler){
+function promiseLimit2(list, limit, handler) {
     const _list = Array.protptype.slice.call(list)
 
-    const promises = _list.splice(0, limit).map((url,index)=>{
-        return handler(url).then(()=> index)
+    const promises = _list.splice(0, limit).map((url, index) => {
+        return handler(url).then(() => index)
     })
 
     let p = Promise.race(promises)
-    for(let i =0;i<_list.length;i++){
-        p = p.then((index)=>{
-            promises[index] = handler(_list[i]).then(()=> index)
+    for (let i = 0; i < _list.length; i++) {
+        p = p.then((index) => {
+            promises[index] = handler(_list[i]).then(() => index)
 
             return Promise.race(promises)
         })
     }
 }
 
+function promiseLimit3(urls, handler) {
+    if (!urls.length) return
+
+    const url = urls.shift()
+
+    handler(url).then(() => {
+        this.promiseLimit3(urls, handler)
+    })
+}
+
 let count = 0
 function loadImg(url) {
-   
+
     return new Promise((resolve, reject) => {
         count++
         const script = document.createElement('script')
@@ -75,3 +86,7 @@ promiseLimit(urls, 3, loadImg).then(res => {
 }).catch(res => {
     console.log(res)
 })
+
+for (let i = 0; i < 3; i++) {
+    promiseLimit3(urls, loadImg)
+}
