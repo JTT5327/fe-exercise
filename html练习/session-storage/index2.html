@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Index2</title>
+</head>
+<body>
+    <h2>sessionStorageB页面</h2>
+    <h4>获取index1页面的sessionStorage-index值</h4>
+    <div id="index"></div>
+    <h4>获取index1页面的sessionStorage-dd值</h4>
+    <div id="dd"></div>
+    <button onclick="handleClick1()">修改sessionStorage-dd值</button>
+    <script>
+        document.getElementById("index").innerText = window.sessionStorage.getItem("index");
+        document.getElementById("dd").innerText = window.sessionStorage.getItem("dd");
+
+        function handleClick1(){
+            window.sessionStorage.setItem("dd", "dd2");
+        }
+    </script>
+</body>
+</html>

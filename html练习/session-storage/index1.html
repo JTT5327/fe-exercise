@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Index1</title>
+</head>
+<body>
+    <h2>sessionStorageA页面</h2>
+    <button onclick="handleSessionClick()">种sessionStorage值dd</button>
+    <button onclick="handleClick()">跳转B页面（当前标签页内跳转）</button>
+    <button onclick="handleBlankClick()">跳转B页面（新开标签页）</button>
+    <h3>a链接跳转</h3>
+    <div><a href="./index2.html" target="_blank" rel="noopener">跳转noopener（默认情况）</a></div>
+    <div><a href="./index2.html" target="_blank" rel="opener">跳转opener</a></div>
+
+    <script>
+        window.sessionStorage.setItem("index", "index");
+    </script>
+
+    <script>
+        function handleSessionClick(e){
+            window.sessionStorage.setItem("dd", "ddd");
+        }
+        function handleClick(e){
+            window.location.href = './index2.html'
+        }
+
+        function handleBlankClick(e){
+            window.open("./index2.html", "_blank")
+        }
+    </script>
+</body>
+</html>
